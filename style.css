@@ -57,6 +57,7 @@ button:hover {
   border: 3px solid #ffb74d;
   border-radius: 12px;
   padding: 10px;
+  min-width: 100px;
   height: 180px;
   display: flex;
   flex-direction: column;
@@ -71,8 +72,10 @@ button:hover {
 
 .card img {
   width: 80px;  /* antes era 50px */
-  height: 80px;
+  height: auto;
   margin-bottom: 5px;
+  max-width: 80%;
+  object-fit: contain;
 }
 
 .card:active {
@@ -100,5 +103,22 @@ button:hover {
 
   h1 {
     font-size: 1.5em;
+  }
+}
+
+@media (max-width: 480px) {
+  .easy-grid,
+  .hard-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .card {
+    height: 160px;
+    font-size: 0.9em;
+  }
+
+  .card img {
+    width: 60px;
+    height: 60px;
   }
 }
