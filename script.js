@@ -44,10 +44,12 @@ const allPhrases = [
 const flipSound = new Audio("sounds/flip.mp3");
 const matchSound = new Audio("sounds/match.mp3");
 const wrongSound = new Audio("sounds/wrong.mp3");
+const celebrationSound = new Audio("sounds/celebration.mp3");
 
 let selected = [];
 let matched = [];
 let isLocked = false;
+let cards = [];
 
 function startGame(level) {
   const grid = document.getElementById("gameGrid");
@@ -75,36 +77,59 @@ function startGame(level) {
 function flipCard(card, phrase) {
   if (isLocked || matched.includes(card.dataset.index) || selected.includes(card)) return;
 
+  // Exibe o conteúdo da carta
   card.innerHTML = `
     <img src="images/${phrase.img}" alt="" />
     <div>${phrase.en}</div>
     <div class="translation">${phrase.pt}</div>
   `;
+
   flipSound.play();
-  speak(phrase.en);
+
+  // Toca a frase apenas no primeiro card
+  if (selected.length === 0) {
+    speak(phrase.en);
+  }
+
   selected.push(card);
 
   if (selected.length === 2) {
     isLocked = true;
 
     const [card1, card2] = selected;
+
+    // Verifica se os textos são iguais e os cards são diferentes
     if (card1.innerText === card2.innerText && card1 !== card2) {
       matched.push(card1.dataset.index, card2.dataset.index);
       card1.classList.add("matched");
       card2.classList.add("matched");
       matchSound.play();
       isLocked = false;
+
+      // Verifica se o jogo terminou
+      if (matched.length === cards.length) {
+        setTimeout(() => {
+          speechSynthesis.cancel(); // interrompe qualquer fala em andamento
+          celebrationSound.play();
+          document.getElementById("congratsScreen").style.display = "flex";
+        }, 2000);
+      }
+
     } else {
+      // Par incorreto → fala a frase do segundo card
+      speak(phrase.en);
       wrongSound.play();
       setTimeout(() => {
         card1.innerHTML = "";
         card2.innerHTML = "";
         isLocked = false;
-      }, 3000);
+      }, 4000);
     }
+
     selected = [];
   }
 }
+
 
 function speak(text) {
   const utterance = new SpeechSynthesisUtterance(text);
@@ -118,3 +143,10 @@ function shuffleArray(array) {
     .sort((a, b) => a.sort - b.sort)
     .map(({ value }) => value);
 }
+
+function restartGame() {
+  document.getElementById("congratsScreen").style.display = "none";
+  document.querySelector(".menu").style.display = "block";
+  document.getElementById("gameGrid").innerHTML = "";
+}
+

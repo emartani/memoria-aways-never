@@ -44,10 +44,12 @@ const allPhrases = [
 const flipSound = new Audio("sounds/flip.mp3");
 const matchSound = new Audio("sounds/match.mp3");
 const wrongSound = new Audio("sounds/wrong.mp3");
+const celebrationSound = new Audio("sounds/celebration.mp3");
 
 let selected = [];
 let matched = [];
 let isLocked = false;
+let cards = [];
 
 function startGame(level) {
   const grid = document.getElementById("gameGrid");
@@ -80,9 +82,10 @@ function flipCard(card, phrase) {
     <div>${phrase.en}</div>
     <div class="translation">${phrase.pt}</div>
   `;
-  flipSound.play();
-  speak(phrase.en);
-  selected.push(card);
+
+    flipSound.play();
+    speak(phrase.en);
+    selected.push(card);
 
   if (selected.length === 2) {
     isLocked = true;
@@ -94,14 +97,25 @@ function flipCard(card, phrase) {
       card2.classList.add("matched");
       matchSound.play();
       isLocked = false;
+
+      // Verifica se o jogo terminou
+      if (matched.length === cards.length) {
+        setTimeout(() => {
+            speechSynthesis.cancel();
+            celebrationSound.play();
+          document.getElementById("congratsScreen").style.display = "flex";
+        }, 500);
+      }
+
     } else {
       wrongSound.play();
       setTimeout(() => {
         card1.innerHTML = "";
         card2.innerHTML = "";
         isLocked = false;
-      }, 3000);
+      }, 4000);
     }
+
     selected = [];
   }
 }
@@ -118,3 +132,10 @@ function shuffleArray(array) {
     .sort((a, b) => a.sort - b.sort)
     .map(({ value }) => value);
 }
+
+function restartGame() {
+  document.getElementById("congratsScreen").style.display = "none";
+  document.querySelector(".menu").style.display = "block";
+  document.getElementById("gameGrid").innerHTML = "";
+}
+

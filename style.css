@@ -109,6 +109,32 @@ button:hover {
   margin-top: 5px;
 }
 
+#congratsScreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5em;
+  color: #4caf50;
+  z-index: 999;
+}
+
+#congratsScreen button {
+  margin-top: 20px;
+  padding: 12px 24px;
+  font-size: 1em;
+  background-color: #ffca28;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
 /* Ajuste para telas muito pequenas */
 @media (max-width: 480px) {
   .card {
