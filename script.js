@@ -45,6 +45,7 @@ const flipSound = new Audio("sounds/flip.mp3");
 const matchSound = new Audio("sounds/match.mp3");
 const wrongSound = new Audio("sounds/wrong.mp3");
 const celebrationSound = new Audio("sounds/celebration.mp3");
+celebrationSound.volume = 1.0;
 
 let selected = [];
 let matched = [];
@@ -62,7 +63,7 @@ function startGame(level) {
   grid.classList.add(level === "easy" ? "easy-grid" : "hard-grid");
 
   let phrases = level === "easy" ? shuffleArray(allPhrases).slice(0, 4) : allPhrases;
-  const cards = [...phrases, ...phrases].sort(() => 0.5 - Math.random());
+ cards = [...phrases, ...phrases].sort(() => 0.5 - Math.random());
 
   cards.forEach((phrase, index) => {
     const card = document.createElement("div");
@@ -106,13 +107,17 @@ function flipCard(card, phrase) {
       matchSound.play();
       isLocked = false;
 
+      console.log("Matched:", matched.length, "Cards:", cards.length);
+
       // Verifica se o jogo terminou
       if (matched.length === cards.length) {
         setTimeout(() => {
+          console.log("Tocando celebration...");
           speechSynthesis.cancel(); // interrompe qualquer fala em andamento
+          celebrationSound.currentTime = 0;
           celebrationSound.play();
           document.getElementById("congratsScreen").style.display = "flex";
-        }, 2000);
+        }, 1000);
       }
 
     } else {
