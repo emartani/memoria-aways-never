@@ -41,29 +41,15 @@ button:hover {
   gap: 12px;
   padding: 10px;
   margin: 0 auto;
-  justify-content: center;
+  max-width: 700px;
 }
 
-/* Layout padrão para celular e telas pequenas */
 .easy-grid {
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
 }
 
 .hard-grid {
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-}
-
-/* Layout fixo para PC */
-@media (min-width: 768px) {
-  .easy-grid {
-    grid-template-columns: repeat(4, 1fr);
-    max-width: 600px;
-  }
-
-  .hard-grid {
-    grid-template-columns: repeat(8, 1fr);
-    max-width: 1120px;
-  }
+  grid-template-columns: repeat(4, 1fr);
 }
 
 .card {
@@ -81,15 +67,12 @@ button:hover {
   touch-action: manipulation;
   transition: transform 0.3s ease, background 0.3s ease;
   box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-  text-align: center;
-  text-transform: uppercase;
 }
 
 .card img {
   width: 100px;
   height: 100px;
   margin-bottom: 5px;
-  object-fit: contain;
 }
 
 .card:active {
@@ -109,19 +92,12 @@ button:hover {
   margin-top: 5px;
 }
 
-/* Ajuste para telas muito pequenas */
-@media (max-width: 480px) {
-  .card {
-    font-size: 0.9em;
-    height: 140px;
+@media (min-width: 768px) {
+  .easy-grid {
+    grid-template-columns: repeat(4, 1fr);
   }
 
-  .card img {
-    width: 50px;
-    height: 50px;
-  }
-
-  h1 {
-    font-size: 1.5em;
+  .hard-grid {
+    grid-template-columns: repeat(8, 1fr);
   }
 }
